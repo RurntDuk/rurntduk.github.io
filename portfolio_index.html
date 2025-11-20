@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Portfolio — DND Character Card</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Indie+Flower&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f7f5ef; /* off-white */
+      --card: #ffffff;
+      --accent: #4c74d9; /* blue */
+      --accent-light: #e6edff;
+      --muted: #8a8a8a;
+      --soft-gray: #d4d4d4;
+      --text: #222;
+      --radius: 14px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    /* NAV */
+    .navbar{
+      position:sticky; top:0; z-index:60;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 20px; gap:12px;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(8px);
+      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    }
+    .logo{font-weight:700; color:var(--accent)}
+    .nav-links{display:flex; gap:14px}
+    .nav-links a{ text-decoration:none; color:var(--text); font-weight:600 }
+    .nav-links a:hover{ color:var(--accent) }
+
+    /* Layout */
+    .container{ max-width:1000px; margin:36px auto; padding:0 18px }
+    h1.page-title{ font-size:1.6rem; margin:6px 0 18px; display:flex; gap:8px; align-items:center }
+    .hero{ display:flex; gap:18px; align-items:center }
+    .card-portrait{
+      min-width:120px; height:120px; border-radius:12px; overflow:hidden; background:linear-gradient(180deg,var(--accent-light),#fff);
+      box-shadow:0 8px 28px rgba(76,116,217,0.12); display:flex; align-items:center; justify-content:center
+    }
+    .portrait img{ width:100%; height:100%; object-fit:cover }
+
+    /* Sections */
+    section.section{ margin-top:28px }
+    section .section-header{ display:flex; align-items:center; justify-content:space-between; gap:12px }
+    section h2{ font-size:1.25rem; margin:10px 0 }
+
+    /* ACCORDION (global) */
+    .accordion{ margin-top:12px }
+    .acc-item{ margin-bottom:14px; border-radius:var(--radius); overflow:hidden; background:var(--card); box-shadow:0 6px 20px rgba(0,0,0,0.06) }
+    .acc-header{ width:100%; padding:14px 16px; text-align:left; background:transparent; border:none; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer }
+    .acc-header .title{ font-weight:700 }
+    .acc-header .meta{ color:var(--muted); font-size:0.95rem }
+    .acc-header:hover{ background:var(--accent-light) }
+
+    .acc-indicator{ width:28px; height:28px; display:inline-grid; place-items:center; border-radius:8px; background:linear-gradient(180deg,#fff,var(--accent-light)); border-left:4px solid var(--accent); font-weight:700; color:var(--accent) }
+
+    .acc-content{ max-height:0; overflow:hidden; transition: max-height 0.45s cubic-bezier(.2,.9,.2,1); padding:0 16px }
+    .acc-content.inner{ padding:14px 16px 18px }
+
+    /* Who I Am - opened by default */
+    .acc-item.open .acc-content{ max-height:1000px; }
+    .acc-item.open .acc-header{ background:var(--accent-light) }
+
+    /* Text styles inside content */
+    .muted { color:var(--muted); font-size:0.95rem }
+
+    /* Strengths bars */
+    .trait{ margin:16px 0 }
+    .trait h3{ font-size:1rem; margin:0 0 8px; display:flex; justify-content:space-between; align-items:center }
+    .trait h3 span{ font-size:0.9rem; color:var(--muted); font-weight:600 }
+    .bar-container{ width:100%; background:var(--soft-gray); border-radius:12px; height:12px; overflow:hidden }
+    .bar{ height:100%; width:0%; background:var(--accent); border-radius:12px; transition: width 1.2s ease }
+
+    /* Credentials list */
+    .cred-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px }
+    .cred-card{ padding:12px; border-radius:12px; background:linear-gradient(180deg,#fff,var(--accent-light)); box-shadow:0 6px 18px rgba(0,0,0,0.04) }
+    .cred-card h4{ margin:0 0 6px }
+    .cred-card p{ margin:0; color:var(--muted); font-size:0.95rem }
+
+    /* Artwork grid */
+    .card-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-top:12px }
+    .art-card{ border-radius:12px; height:160px; overflow:hidden; background:var(--card); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 28px rgba(0,0,0,0.06) }
+    .art-card img{ width:100%; height:100%; object-fit:cover }
+
+    /* Footer */
+    footer{ margin:40px 0 80px; text-align:center; color:var(--muted) }
+
+    /* Responsive tweaks */
+    @media (max-width:720px){
+      .hero{ flex-direction:row; gap:12px }
+      .card-portrait{ min-width:96px; height:96px }
+    }
+
+    /* Optional: small handwritten header style */
+    .handwrite{ font-family:'Indie Flower', cursive; font-size:1.05rem; color:var(--accent) }
+
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="logo">MyCard</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <header class="hero">
+      <div>
+        <h1 class="page-title"><span class="handwrite">Ash P.</span> — Portfolio</h1>
+        <div class="muted">D&D-style character card, UI + gallery, animations</div>
+      </div>
+
+      <div class="card-portrait" aria-hidden="true">
+        <!-- placeholder portrait, drop your image at images/portrait.jpg -->
+        <img src="images/portrait.jpg" alt="portrait" onerror="this.style.opacity=0.08">
+      </div>
+    </header>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <div class="section-header">
+        <h2>About</h2>
+      </div>
+
+      <div class="accordion">
+        <!-- WHO I AM (open by default) -->
+        <div class="acc-item open" data-acc="who">
+          <button class="acc-header">
+            <div class="title">Who I Am</div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div class="meta">D&D enthusiast • Designer • Creator</div>
+              <div class="acc-indicator">▸</div>
+            </div>
+          </button>
+
+          <div class="acc-content inner">
+            <p>Hello — I'm a creative maker who blends character design with web UI. I build stylized character cards, small interactive experiences, and portfolio pages. I like clean layouts, fantasy vibes, and subtle micro-animations.</p>
+            <p class="muted">Location: Philippines • Tools: HTML/CSS/JS • Soft spot for parchment textures</p>
+          </div>
+        </div>
+
+        <!-- Strengths (closed) -->
+        <div class="acc-item" data-acc="strengths">
+          <button class="acc-header">
+            <div class="title">Strengths</div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div class="meta">Personality traits & levels</div>
+              <div class="acc-indicator">▸</div>
+            </div>
+          </button>
+
+          <div class="acc-content inner">
+            <!-- Traits with bar percentages (rounded from score/5) -->
+            <div class="trait">
+              <h3>Openness to Experience <span>(3.92 / 5)</span></h3>
+              <div class="bar-container"><div class="bar" data-level="78"></div></div>
+              <p class="muted">⬆️ Creative, curious, original — ⬇️ Conventional, narrow interests</p>
+            </div>
+
+            <div class="trait">
+              <h3>Conscientiousness <span>(3.45 / 5)</span></h3>
+              <div class="bar-container"><div class="bar" data-level="69"></div></div>
+              <p class="muted">⬆️ Reliable, organized — ⬇️ Disorganized, negligent</p>
+            </div>
+
+            <div class="trait">
+              <h3>Extraversion <span>(3.25 / 5)</span></h3>
+              <div class="bar-container"><div class="bar" data-level="65"></div></div>
+              <p class="muted">⬆️ Sociable, outgoing — ⬇️ Reserved, quiet</p>
+            </div>
+
+            <div class="trait">
+              <h3>Agreeableness <span>(3.64 / 5)</span></h3>
+              <div class="bar-container"><div class="bar" data-level="72"></div></div>
+              <p class="muted">⬆️ Sympathetic, forgiving — ⬇️ Critical, harsh</p>
+            </div>
+
+            <div class="trait">
+              <h3>Neuroticism <span>(3.32 / 5)</span></h3>
+              <div class="bar-container"><div class="bar" data-level="66"></div></div>
+              <p class="muted">⬆️ Nervous, worrying — ⬇️ Calm, resilient</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Fun Facts -->
+        <div class="acc-item" data-acc="fun">
+          <button class="acc-header">
+            <div class="title">Fun Facts</div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div class="meta">Small but spicy</div>
+              <div class="acc-indicator">▸</div>
+            </div>
+          </button>
+
+          <div class="acc-content inner">
+            <ul>
+              <li>Favorite class: Artificer / Tinkerer</li>
+              <li>Design habit: sketch first, tidy later</li>
+              <li>Secret power: can finish a page layout in one coffee run</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Credentials -->
+      <h3 style="margin-top:18px">Credentials</h3>
+      <div class="accordion">
+        <div class="cred-grid">
+          <div class="cred-card">
+            <h4>Education</h4>
+            <p>B.S. in Design-ish (placeholder)</p>
+          </div>
+
+          <div class="cred-card">
+            <h4>Experience</h4>
+            <p>UI / Illustration / Freelance projects</p>
+          </div>
+
+          <div class="cred-card">
+            <h4>Certifications</h4>
+            <p>Web basics • Accessibility • Design systems (placeholder)</p>
+          </div>
+
+          <div class="cred-card">
+            <h4>Skills</h4>
+            <p>HTML, CSS, JS, Figma, Procreate</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- WORK -->
+    <section id="work" class="section">
+      <div class="section-header">
+        <h2>My Artworks</h2>
+      </div>
+
+      <div class="card-grid">
+        <div class="art-card"><img src="images/art1.jpg" alt="art1" onerror="this.style.opacity=0.08"></div>
+        <div class="art-card"><img src="images/art2.jpg" alt="art2" onerror="this.style.opacity=0.08"></div>
+        <div class="art-card"><img src="images/art3.jpg" alt="art3" onerror="this.style.opacity=0.08"></div>
+        <div class="art-card"><img src="images/art4.jpg" alt="art4" onerror="this.style.opacity=0.08"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <p class="muted">Want collabs, commissions, or just want to say hi? Drop an email at <strong>yourname@example.com</strong></p>
+    </section>
+
+    <footer>
+      <small>Made with HTML • CSS • JS — Save this file as <code>index.html</code> and host on GitHub Pages.</small>
+    </footer>
+
+  </main>
+
+  <script>
+    // Accordion behavior (single-open style), Who I Am stays open by default
+    document.addEventListener('DOMContentLoaded', () => {
+      const items = document.querySelectorAll('.acc-item');
+
+      items.forEach(item => {
+        const header = item.querySelector('.acc-header');
+        header.addEventListener('click', e => {
+          // don't close the first one (Who I Am)
+          const isFirst = item.dataset.acc === 'who';
+          const currentlyOpen = item.classList.contains('open');
+
+          // close others
+          items.forEach(i => {
+            if (i !== item) i.classList.remove('open');
+            // also reset bars when Strengths closes
+            if (i.dataset.acc === 'strengths' && !i.classList.contains('open')){
+              i.querySelectorAll('.bar').forEach(b => b.style.width = '0%');
+            }
+          });
+
+          // toggle current
+          if (currentlyOpen) {
+            if (!isFirst) item.classList.remove('open');
+          } else {
+            item.classList.add('open');
+
+            // if strengths opened, animate bars
+            if (item.dataset.acc === 'strengths'){
+              const bars = item.querySelectorAll('.bar');
+              bars.forEach(bar => {
+                const lvl = bar.dataset.level || 0;
+                // small timeout so transition runs after max-height expands a bit
+                setTimeout(() => { bar.style.width = lvl + '%'; }, 120);
+              });
+            }
+          }
+        });
+      });
+
+      // Accessibility: open 'Who I Am' by default (ensure max-height applied)
+      document.querySelectorAll('.acc-item.open .acc-content').forEach(c => {
+        c.style.maxHeight = c.scrollHeight + 'px';
+      });
+
+      // On resize recalc open panels
+      window.addEventListener('resize', () => {
+        document.querySelectorAll('.acc-item.open .acc-content').forEach(c => {
+          c.style.maxHeight = c.scrollHeight + 'px';
+        });
+      });
+
+    });
+  </script>
+
+</body>
+</html>
